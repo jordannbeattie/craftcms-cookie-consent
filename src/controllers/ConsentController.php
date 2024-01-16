@@ -9,6 +9,9 @@ class ConsentController extends Controller
 
     protected array|bool|int $allowAnonymous = true;
 
+    /*
+     * Default - Save form submission
+     */
     public function actionIndex()
     {
 
@@ -29,6 +32,22 @@ class ConsentController extends Controller
         // Output the 'necessaryToggle' value
         return $this->asJson([
             'refresh' => $shouldRefresh
+        ]);
+
+    }
+    
+    /*
+     * Accept all
+     */
+    public function actionAcceptAll()
+    {
+        
+        $this->requirePostRequest();
+
+        $this->setCookies( true, true );
+
+        return $this->asJson([
+            'refresh' => true
         ]);
 
     }

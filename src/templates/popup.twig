@@ -1,7 +1,7 @@
 {% if not craft.gtmConsent.hasSetPreferences() %}
 
     <div id="GTMConsent" class="fixed bottom-0 right-0 p-4 z-50">
-        <div id="GTMConsent__Wrapper" class="bg-primary text-white p-4 w-[40ch] min-w-[40ch] max-w-[40ch]" x-data="{ detailOpen : true }">
+        <div id="GTMConsent__Wrapper" class="bg-primary text-white p-4 w-[40ch] min-w-[40ch] max-w-[40ch]" x-data="{ detailOpen : false }">
 
             <div x-show="!detailOpen">
                 <div id="GTMConsent__DefaultContent" class="flex flex-col gap-2">
@@ -14,15 +14,21 @@
                         We use cookies to personalize content and ads, and to analyze our traffic and improve our service.
                     </div>
 
-                    <div id="GTMConsent__Buttons" class="flex flex-col md:flex-row items-center gap-2">
+                    <div id="GTMConsent__Buttons" class="flex flex-col md:flex-row items-center gap-4">
 
-                        <button id="GTMConsent__AcceptButton" class="hover:cursor-pointer">
-                            Accept
-                        </button>
+                        <form action="{{ url('actions/gtm-consent/consent/accept-all') }}" method="post">
+                            {{ csrfInput() }}
+                            <button id="GTMConsent__AcceptButton" class="hover:cursor-pointer">
+                                Accept all
+                            </button>
+                        </form>
 
-                        <button id="GTMConsent__NecessaryOnlyButton" class="hover:cursor-pointer">
-                            Necessary only
-                        </button>
+                        <form action="{{ url('actions/gtm-consent/consent/index') }}" method="post">
+                            {{ csrfInput() }}
+                            <button id="GTMConsent__NecessaryOnlyButton" class="hover:cursor-pointer">
+                                Necessary only
+                            </button>
+                        </form>
 
                         <button id="GTMConsent__Moreutton" class="hover:cursor-pointer" x-on:click="detailOpen=true">
                             More
@@ -108,7 +114,7 @@
                             Save
                         </button>
 
-                        <button id="GTMConsent__LessButton" class="hover:cursor-pointer" x-on:click="detailOpen=false">
+                        <button id="GTMConsent__LessButton" class="hover:cursor-pointer" type="button" x-on:click="detailOpen=false">
                             Less
                         </button>
                     
@@ -139,7 +145,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#GTMConsent__DetailContent').on('submit', function(e) {
+            $('#GTMConsent form').on('submit', function(e) {
                 e.preventDefault(); // Prevent the default form submission
 
                 $.ajax({
@@ -151,9 +157,8 @@
                         if(response.refresh) {
                             // Refresh the page
                             window.location.reload();
-                        } else {
-                            // Handle other cases, e.g., showing a message
-                            alert('Form submitted successfully');
+                        }else{
+                            $('#GTMConsent').hide();
                         }
                     },
                     error: function(response) {
