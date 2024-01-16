@@ -59,4 +59,14 @@ class GtmConsentVariable
 
     }
 
+    /*
+     * Get Config
+     */
+    public function getConfig()
+    {
+        $projectConfig = Craft::$app->config->getConfigFromFile('gtm-consent') ?? [];
+        $defaultConfig = include __DIR__ . "/../config/gtm-consent.php" ?? [];
+        return array_unique( array_merge( $defaultConfig, $projectConfig ), SORT_REGULAR );
+    }
+
 }

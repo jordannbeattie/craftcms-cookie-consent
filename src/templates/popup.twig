@@ -1,34 +1,44 @@
 {% if not craft.gtmConsent.hasSetPreferences() %}
 
+    {% set config = craft.gtmConsent.getConfig() %}
+
     <div id="GTMConsent" class="fixed bottom-0 right-0 p-4 z-50">
         <div id="GTMConsent__Wrapper" class="bg-primary text-white p-4 w-[40ch] min-w-[40ch] max-w-[40ch]" x-data="{ detailOpen : false }">
 
             <div x-show="!detailOpen">
                 <div id="GTMConsent__DefaultContent" class="flex flex-col gap-2">
 
-                    <h2 id="GTMConsent__Headline" class="font-semibold font-heading text-lg">
-                        This website uses cookies
-                    </h2>
+                    {% if config['headline'] is defined and config['headline'] is not empty %}
+                        <h2 id="GTMConsent__Headline" class="font-semibold font-heading text-lg">
+                            {{ config['headline'] }}
+                        </h2>
+                    {% endif %}
 
-                    <div id="GTMConsent__Copy" class="body-sm max-w-[36ch]">
-                        We use cookies to personalize content and ads, and to analyze our traffic and improve our service.
-                    </div>
+                    {% if config['copy'] is defined and config['copy'] is not empty %}
+                        <div id="GTMConsent__Copy" class="body-sm max-w-[36ch]">
+                            {{ config['copy'] }}
+                        </div>
+                    {% endif %}
 
-                    <div id="GTMConsent__Buttons" class="flex flex-col md:flex-row items-center gap-4">
+                    <div id="GTMConsent__Buttons" class="flex flex-col md:flex-row items-center justify-between">
 
-                        <form action="{{ url('actions/gtm-consent/consent/accept-all') }}" method="post">
-                            {{ csrfInput() }}
-                            <button id="GTMConsent__AcceptButton" class="hover:cursor-pointer">
-                                Accept all
-                            </button>
-                        </form>
+                        <div id="GTMConsent__AcceptButtons" class="flex flex-col md:flex-row items-center space-x-4">
 
-                        <form action="{{ url('actions/gtm-consent/consent/index') }}" method="post">
-                            {{ csrfInput() }}
-                            <button id="GTMConsent__NecessaryOnlyButton" class="hover:cursor-pointer">
-                                Necessary only
-                            </button>
-                        </form>
+                            <form action="{{ url('actions/gtm-consent/consent/accept-all') }}" method="post">
+                                {{ csrfInput() }}
+                                <button id="GTMConsent__AcceptButton" class="hover:cursor-pointer">
+                                    Accept all
+                                </button>
+                            </form>
+
+                            <form action="{{ url('actions/gtm-consent/consent/index') }}" method="post">
+                                {{ csrfInput() }}
+                                <button id="GTMConsent__NecessaryOnlyButton" class="hover:cursor-pointer">
+                                    Necessary only
+                                </button>
+                            </form>
+                        
+                        </div>
 
                         <button id="GTMConsent__Moreutton" class="hover:cursor-pointer" x-on:click="detailOpen=true">
                             More
@@ -54,9 +64,11 @@
                                         Necessary
                                     </div>
 
-                                    <div class="body-sm">
-                                        We need these, you can't delete them
-                                    </div>
+                                    {% if config['necessary_copy'] is defined and config['necessary_copy'] is not empty %}
+                                        <div class="body-sm">
+                                            {{ config['necessary_copy'] }}
+                                        </div>
+                                    {% endif %}
 
                                 </div>
 
@@ -74,14 +86,16 @@
                                         Analytics
                                     </div>
 
-                                    <div class="body-sm">
-                                        Something short about analytics
-                                    </div>
+                                    {% if config['analytics_copy'] is defined and config['analytics_copy'] is not empty %}
+                                        <div class="body-sm">
+                                            {{ config['analytics_copy'] }}
+                                        </div>
+                                    {% endif %}
 
                                 </div>
 
                                 <div class="flex">
-                                    {{ _self.toggle( "analyticsToggle" ) }}
+                                    {{ _self.toggle( "analyticsToggle" ) }} 
                                 </div>
 
                         </div>
@@ -94,9 +108,11 @@
                                         Advertisement
                                     </div>
 
-                                    <div class="body-sm">
-                                        Something short about advertisement 
-                                    </div>
+                                    {% if config['advertisement_copy'] is defined and config['advertisement_copy'] is not empty %}
+                                        <div class="body-sm">
+                                            {{ config['advertisement_copy'] }}
+                                        </div>
+                                    {% endif %}
 
                                 </div>
 
@@ -107,8 +123,14 @@
                         </div>
 
                     </div>
+
+                    {% if config['policy_url'] is defined and config['policy_url'] is not empty %}
+                        <a href="{{ config['policy_url'] }}" id="GTMConsent__PolicyLink">
+                            {{ config['policy_copy'] ?? "Learn more" }}
+                        </a>
+                    {% endif %}
                     
-                    <div id="GTMConsent__Buttons" class="flex flex-col md:flex-row items-center gap-2">
+                    <div id="GTMConsent__Buttons" class="flex flex-col md:flex-row items-center justify-between">
 
                         <button id="GTMConsent__SubmitButton" type="submit">
                             Save

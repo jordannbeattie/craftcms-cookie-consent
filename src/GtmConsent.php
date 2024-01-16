@@ -2,6 +2,7 @@
 
 namespace jordanbeattie\gtmconsent;
 
+use Craft;
 use craft\base\Plugin;
 use craft\events\RegisterTemplateRootsEvent;
 use craft\web\twig\variables\CraftVariable;
@@ -52,6 +53,17 @@ class GtmConsent extends Plugin
                 $event->roots['gtm-consent'] = __DIR__ . '/templates';
             }
         );
+
+        Craft::$app->onInit(function() {
+            
+            $this->setComponents([
+                'config' => [
+                    'class' => 'craft\services\Config', 
+                    'defaultConfig' => include __DIR__ . '/config/gtm-consent.php'
+                ]
+            ]);
+            
+        });
         
     }
 
