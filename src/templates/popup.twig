@@ -2,8 +2,8 @@
 
     {% set config = craft.gtmConsent.getConfig() %}
 
-    <div id="GTMConsent" class="fixed bottom-0 right-0 p-4 z-50">
-        <div id="GTMConsent__Wrapper" class="bg-primary text-white p-4 w-[40ch] min-w-[40ch] max-w-[40ch]" x-data="{ detailOpen : false }">
+    <div id="GTMConsent" class="fixed bottom-0 right-0 p-4 z-50 w-full md:w-[45ch] md:min-w-[45ch] md:max-w-[45ch]">
+        <div id="GTMConsent__Wrapper" class="bg-primary text-white p-4 w-full text-center md:text-left" x-data="{ detailOpen : false }">
 
             <div x-show="!detailOpen">
                 <div id="GTMConsent__DefaultContent" class="flex flex-col gap-2">
@@ -15,7 +15,7 @@
                     {% endif %}
 
                     {% if config['copy'] is defined and config['copy'] is not empty %}
-                        <div id="GTMConsent__Copy" class="body-sm max-w-[36ch]">
+                        <div id="GTMConsent__Copy" class="body-sm md:max-w-[36ch]">
                             {{ config['copy'] }}
                         </div>
                     {% endif %}
@@ -54,9 +54,9 @@
 
                     {{ csrfInput() }}
 
-                    <div id="GTMConsent__Options" class="flex flex-col gap-3">
+                    <div id="GTMConsent__Options" class="flex flex-col gap-y-4">
 
-                        <div id="GTMConsent__Necessary" class="flex items-start justify-between">
+                        <div id="GTMConsent__Necessary" class="flex flex-col md:flex-row items-center md:items-start justify-between gap-4">
 
                                 <div class="flex flex-col gap-y-1">
 
@@ -65,7 +65,7 @@
                                     </div>
 
                                     {% if config['necessary_copy'] is defined and config['necessary_copy'] is not empty %}
-                                        <div class="body-sm">
+                                        <div class="body-xs">
                                             {{ config['necessary_copy'] }}
                                         </div>
                                     {% endif %}
@@ -78,7 +78,7 @@
 
                         </div>
 
-                        <div id="GTMConsent__Analytics" class="flex items-start justify-between">
+                        <div id="GTMConsent__Analytics" class="flex flex-col md:flex-row items-center md:items-start justify-between gap-4">
 
                                 <div class="flex flex-col gap-y-1">
 
@@ -87,7 +87,7 @@
                                     </div>
 
                                     {% if config['analytics_copy'] is defined and config['analytics_copy'] is not empty %}
-                                        <div class="body-sm">
+                                        <div class="body-xs">
                                             {{ config['analytics_copy'] }}
                                         </div>
                                     {% endif %}
@@ -100,7 +100,7 @@
 
                         </div>
 
-                        <div id="GTMConsent__Analytics" class="flex items-start justify-between">
+                        <div id="GTMConsent__Analytics" class="flex flex-col md:flex-row items-center md:items-start justify-between gap-4">
 
                                 <div class="flex flex-col gap-y-1">
 
@@ -109,7 +109,7 @@
                                     </div>
 
                                     {% if config['advertisement_copy'] is defined and config['advertisement_copy'] is not empty %}
-                                        <div class="body-sm">
+                                        <div class="body-xs">
                                             {{ config['advertisement_copy'] }}
                                         </div>
                                     {% endif %}
