@@ -1,0 +1,47 @@
+{
+    "name": "jordanbeattie/craftcms-gtm-consent",
+    "description": "Consent manager for Google Tag Manager",
+    "type": "craft-plugin",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin"
+    ],
+    "support": {},
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jordan Beattie",
+            "homepage": "https://jordanbeattie.com"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0|^4.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+          "jordanbeattie\\gtmconsent\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "GTM Consent",
+        "handle": "gtm-consent",
+        "hasCpSettings": true,
+        "hasCpSection": false,
+        "changelogUrl": "",
+        "components": {},
+        "class": "jordanbeattie\\gtmconsent\\GtmConsent"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require-dev": {
+        "craftcms/rector": "dev-main"
+    },
+    "config": {
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true,
+            "craftcms/plugin-installer": true
+        }
+    }
+}
