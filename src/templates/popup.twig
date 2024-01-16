@@ -1,142 +1,168 @@
-<div id="GTMConsent" class="fixed bottom-0 right-0 p-4 z-50">
-    <div id="GTMConsent__Wrapper" class="bg-primary text-white p-4 w-[40ch] min-w-[40ch] max-w-[40ch]" x-data="{ detailOpen : true }">
+{% if not craft.gtmConsent.hasSetPreferences() %}
 
-        <div x-show="!detailOpen">
-            <div id="GTMConsent__DefaultContent" class="flex flex-col gap-2">
+    <div id="GTMConsent" class="fixed bottom-0 right-0 p-4 z-50">
+        <div id="GTMConsent__Wrapper" class="bg-primary text-white p-4 w-[40ch] min-w-[40ch] max-w-[40ch]" x-data="{ detailOpen : true }">
 
-                <h2 id="GTMConsent__Headline" class="font-semibold font-heading text-lg">
-                    This website uses cookies
-                </h2>
+            <div x-show="!detailOpen">
+                <div id="GTMConsent__DefaultContent" class="flex flex-col gap-2">
 
-                <div id="GTMConsent__Copy" class="body-sm max-w-[36ch]">
-                    We use cookies to personalize content and ads, and to analyze our traffic and improve our service.
+                    <h2 id="GTMConsent__Headline" class="font-semibold font-heading text-lg">
+                        This website uses cookies
+                    </h2>
+
+                    <div id="GTMConsent__Copy" class="body-sm max-w-[36ch]">
+                        We use cookies to personalize content and ads, and to analyze our traffic and improve our service.
+                    </div>
+
+                    <div id="GTMConsent__Buttons" class="flex flex-col md:flex-row items-center gap-2">
+
+                        <button id="GTMConsent__AcceptButton" class="hover:cursor-pointer">
+                            Accept
+                        </button>
+
+                        <button id="GTMConsent__NecessaryOnlyButton" class="hover:cursor-pointer">
+                            Necessary only
+                        </button>
+
+                        <button id="GTMConsent__Moreutton" class="hover:cursor-pointer" x-on:click="detailOpen=true">
+                            More
+                        </button>
+                    
+                    </div>
+
                 </div>
+            </div>
 
-                <div id="GTMConsent__Buttons" class="flex flex-col md:flex-row items-center gap-2">
+            <div x-show="detailOpen" x-cloak>
+                <form method="post" action="{{ url('actions/gtm-consent/consent/index') }}" id="GTMConsent__DetailContent" class="flex flex-col gap-2">
 
-                    <button id="GTMConsent__AcceptButton" class="hover:cursor-pointer">
-                        Accept
-                    </button>
+                    {{ csrfInput() }}
 
-                    <button id="GTMConsent__NecessaryOnlyButton" class="hover:cursor-pointer">
-                        Necessary only
-                    </button>
+                    <div id="GTMConsent__Options" class="flex flex-col gap-3">
 
-                    <button id="GTMConsent__Moreutton" class="hover:cursor-pointer" x-on:click="detailOpen=true">
-                        More
-                    </button>
-                
-                </div>
+                        <div id="GTMConsent__Necessary" class="flex items-start justify-between">
 
+                                <div class="flex flex-col gap-y-1">
+
+                                    <div class="body-lg font-semibold">
+                                        Necessary
+                                    </div>
+
+                                    <div class="body-sm">
+                                        We need these, you can't delete them
+                                    </div>
+
+                                </div>
+
+                                <div class="flex">
+                                    {{ _self.toggle( "necessaryToggle", "1", true ) }}
+                                </div>
+
+                        </div>
+
+                        <div id="GTMConsent__Analytics" class="flex items-start justify-between">
+
+                                <div class="flex flex-col gap-y-1">
+
+                                    <div class="body-lg font-semibold">
+                                        Analytics
+                                    </div>
+
+                                    <div class="body-sm">
+                                        Something short about analytics
+                                    </div>
+
+                                </div>
+
+                                <div class="flex">
+                                    {{ _self.toggle( "analyticsToggle" ) }}
+                                </div>
+
+                        </div>
+
+                        <div id="GTMConsent__Analytics" class="flex items-start justify-between">
+
+                                <div class="flex flex-col gap-y-1">
+
+                                    <div class="body-lg font-semibold">
+                                        Advertisement
+                                    </div>
+
+                                    <div class="body-sm">
+                                        Something short about advertisement 
+                                    </div>
+
+                                </div>
+
+                                <div class="flex">
+                                    {{ _self.toggle( "adToggle" ) }}
+                                </div>
+
+                        </div>
+
+                    </div>
+                    
+                    <div id="GTMConsent__Buttons" class="flex flex-col md:flex-row items-center gap-2">
+
+                        <button id="GTMConsent__SubmitButton" type="submit">
+                            Save
+                        </button>
+
+                        <button id="GTMConsent__LessButton" class="hover:cursor-pointer" x-on:click="detailOpen=false">
+                            Less
+                        </button>
+                    
+                    </div>
+                    
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    {% macro toggle(toggleName, defaultState='0', isDisabled=false) %}
+        <div class="flex justify-center items-center" x-data="{ toggle: '{{ defaultState }}', disabled: {{ isDisabled ? 'true' : 'false' }} }">
+            <div class="relative rounded-full w-12 h-6 transition duration-200 ease-linear"
+                :class="[toggle === '1' ? (disabled ? 'bg-gray-300' : 'bg-green-400') : 'bg-gray-400']">
+                <label :for="'{{ toggleName }}'"
+                    class="absolute left-0 bg-white border-2 mb-2 w-6 h-6 rounded-full transition transform duration-100 ease-linear"
+                    :class="[toggle === '1' ? 'translate-x-full' : 'translate-x-0', disabled ? 'border-gray-300 cursor-not-allowed' : (toggle === '1' ? 'border-green-400 cursor-pointer' : 'border-gray-400 cursor-pointer')]"></label>
+                <input type="checkbox" :id="'{{ toggleName }}'" :name="'{{ toggleName }}'"
+                    class="hidden w-full h-full active:outline-none focus:outline-none"
+                    @click="if (!disabled) { toggle = toggle === '0' ? '1' : '0' }"
+                    :checked="toggle === '1'"
+                    :disabled="disabled"/>
             </div>
         </div>
+    {% endmacro %}
 
-        <div x-show="detailOpen" x-cloak>
-            <form method="post" action="{{ url('actions/gtm-consent/consent/index') }}" id="GTMConsent__DetailContent" class="flex flex-col gap-2">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#GTMConsent__DetailContent').on('submit', function(e) {
+                e.preventDefault(); // Prevent the default form submission
 
-                {{ csrfInput() }}
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(), // Serialize the form data
+                    success: function(response) {
+                        // Check if the 'refresh' property in the response is true
+                        if(response.refresh) {
+                            // Refresh the page
+                            window.location.reload();
+                        } else {
+                            // Handle other cases, e.g., showing a message
+                            alert('Form submitted successfully');
+                        }
+                    },
+                    error: function(response) {
+                        // Handle error.
+                        alert('An error occurred');
+                    }
+                });
+            });
+        });
+    </script>
 
-                <div id="GTMConsent__Options" class="flex flex-col gap-3">
-
-                    <div id="GTMConsent__Necessary" class="flex items-start justify-between">
-
-                            <div class="flex flex-col gap-y-1">
-
-                                <div class="body-lg font-semibold">
-                                    Necessary
-                                </div>
-
-                                <div class="body-sm">
-                                    We need these, you can't delete them
-                                </div>
-
-                            </div>
-
-                            <div class="flex">
-                                {{ _self.toggle( "necessaryToggle", "1", true ) }}
-                            </div>
-
-                    </div>
-
-                    <div id="GTMConsent__Analytics" class="flex items-start justify-between">
-
-                            <div class="flex flex-col gap-y-1">
-
-                                <div class="body-lg font-semibold">
-                                    Analytics
-                                </div>
-
-                                <div class="body-sm">
-                                    Something short about analytics
-                                </div>
-
-                            </div>
-
-                            <div class="flex">
-                                {{ _self.toggle( "analyticsToggle" ) }}
-                            </div>
-
-                    </div>
-
-                    <div id="GTMConsent__Analytics" class="flex items-start justify-between">
-
-                            <div class="flex flex-col gap-y-1">
-
-                                <div class="body-lg font-semibold">
-                                    Advertisement
-                                </div>
-
-                                <div class="body-sm">
-                                    Something short about advertisement 
-                                </div>
-
-                            </div>
-
-                            <div class="flex">
-                                {{ _self.toggle( "adToggle" ) }}
-                            </div>
-
-                    </div>
-
-                </div>
-                
-                <div id="GTMConsent__Buttons" class="flex flex-col md:flex-row items-center gap-2">
-
-                    <button id="GTMConsent__SubmitButton" type="submit">
-                        Save
-                    </button>
-
-                    <button id="GTMConsent__LessButton" class="hover:cursor-pointer" x-on:click="detailOpen=false">
-                        Less
-                    </button>
-                
-                </div>
-                
-            </form>
-        </div>
-
-    </div>
-</div>
-
-{% macro toggle(toggleName, defaultState='0', isDisabled=false) %}
-    <div class="flex justify-center items-center" x-data="{ toggle: '{{ defaultState }}', disabled: {{ isDisabled ? 'true' : 'false' }} }">
-        <div class="relative rounded-full w-12 h-6 transition duration-200 ease-linear"
-            :class="[toggle === '1' ? (disabled ? 'bg-gray-300' : 'bg-green-400') : 'bg-gray-400']">
-            <label :for="'{{ toggleName }}'"
-                class="absolute left-0 bg-white border-2 mb-2 w-6 h-6 rounded-full transition transform duration-100 ease-linear"
-                :class="[toggle === '1' ? 'translate-x-full' : 'translate-x-0', disabled ? 'border-gray-300 cursor-not-allowed' : (toggle === '1' ? 'border-green-400 cursor-pointer' : 'border-gray-400 cursor-pointer')]"></label>
-            <input type="checkbox" :id="'{{ toggleName }}'" :name="'{{ toggleName }}'"
-                class="hidden w-full h-full active:outline-none focus:outline-none"
-                @click="if (!disabled) { toggle = toggle === '0' ? '1' : '0' }"
-                :checked="toggle === '1'"
-                :disabled="disabled"/>
-        </div>
-    </div>
-{% endmacro %}
-
-
-
-
-
-
-
+{% endif %}

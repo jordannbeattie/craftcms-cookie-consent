@@ -38,16 +38,12 @@ class ConsentController extends Controller
      */
     public function setCookies( $analytics, $advertisement )
     {
-        if( !is_null( $analytics ) )
-        {
-            setcookie( 'gtmconsent-analytics', $analytics );
-        }
-
-        if( !is_null( $advertisement ) )
-        {
-            setcookie( 'gtmconsent-advertisement', $advertisement );
-        }
-
+        setcookie( 'gtmconsent', json_encode([
+            'analytics' => $analytics ? true : false, 
+            'advertisement' => $advertisement ? true : false
+        ]), [
+            'path' => '/'
+        ]);   
     }
 
 }
