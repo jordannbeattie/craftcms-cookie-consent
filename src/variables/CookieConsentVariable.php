@@ -1,11 +1,11 @@
 <?php
 
-namespace jordanbeattie\gtmconsent\variables;
+namespace jordanbeattie\cookieconsent\variables;
 
 use Craft;
 use Twig\Markup;
 
-class GtmConsentVariable
+class CookieConsentVariable
 {
 
     /*
@@ -16,7 +16,7 @@ class GtmConsentVariable
 
         // Get the template content as a string
         $content = Craft::$app->getView()->renderTemplate( 
-            'gtm-consent/popup', 
+            'cookie-consent/popup', 
             []
         );
 
@@ -29,7 +29,7 @@ class GtmConsentVariable
      */
     public function hasSetPreferences()
     {
-        return isset($_COOKIE['gtmconsent']);
+        return isset($_COOKIE['cookieconsent']);
     }
 
     /*
@@ -38,10 +38,10 @@ class GtmConsentVariable
     public function getConsent()
     {
 
-        if( isset( $_COOKIE['gtmconsent'] ) )
+        if( isset( $_COOKIE['cookieconsent'] ) )
         {
 
-            $consentCookie = json_decode($_COOKIE['gtmconsent']);
+            $consentCookie = json_decode($_COOKIE['cookieconsent']);
             
             return [
                 'set' => true,
@@ -64,8 +64,8 @@ class GtmConsentVariable
      */
     public function getConfig()
     {
-        $projectConfig = Craft::$app->config->getConfigFromFile('gtm-consent') ?? [];
-        $defaultConfig = include __DIR__ . "/../config/gtm-consent.php" ?? [];
+        $projectConfig = Craft::$app->config->getConfigFromFile('cookie-consent') ?? [];
+        $defaultConfig = include __DIR__ . "/../config/cookie-consent.php" ?? [];
         return array_unique( array_merge( $defaultConfig, $projectConfig ), SORT_REGULAR );
     }
 

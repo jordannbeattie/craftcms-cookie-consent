@@ -1,10 +1,10 @@
 <?php
-namespace jordanbeattie\gtmconsent\controllers;
+namespace jordanbeattie\cookieconsent\controllers;
 
 use Craft;
 use craft\web\Controller;
 
-class ConsentController extends Controller
+class CookieConsentController extends Controller
 {
 
     protected array|bool|int $allowAnonymous = true;
@@ -57,7 +57,7 @@ class ConsentController extends Controller
      */
     public function setCookies( $analytics, $advertisement )
     {
-        setcookie( 'gtmconsent', json_encode([
+        setcookie( 'cookieconsent', json_encode([
             'analytics' => $analytics ? true : false, 
             'advertisement' => $advertisement ? true : false
         ]), [

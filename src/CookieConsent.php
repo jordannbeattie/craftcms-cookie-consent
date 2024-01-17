@@ -1,16 +1,16 @@
 <?php
 
-namespace jordanbeattie\gtmconsent;
+namespace jordanbeattie\cookieconsent;
 
 use Craft;
 use craft\base\Plugin;
 use craft\events\RegisterTemplateRootsEvent;
 use craft\web\twig\variables\CraftVariable;
 use craft\web\View;
-use jordanbeattie\gtmconsent\variables\GtmConsentVariable;
+use jordanbeattie\cookieconsent\variables\CookieConsentVariable;
 use yii\base\Event;
 
-class GtmConsent extends Plugin
+class CookieConsent extends Plugin
 {
     
     /*
@@ -39,7 +39,7 @@ class GtmConsent extends Plugin
             CraftVariable::EVENT_INIT,
             function( Event $event ){
                 $variable = $event->sender;
-                $variable->set('gtmConsent', GtmConsentVariable::class);
+                $variable->set('cookieConsent', CookieConsentVariable::class);
             }
         );
 
@@ -50,7 +50,7 @@ class GtmConsent extends Plugin
             View::class,
             View::EVENT_REGISTER_SITE_TEMPLATE_ROOTS,
             function( RegisterTemplateRootsEvent $event ){
-                $event->roots['gtm-consent'] = __DIR__ . '/templates';
+                $event->roots['cookie-consent'] = __DIR__ . '/templates';
             }
         );
 
@@ -59,10 +59,17 @@ class GtmConsent extends Plugin
             $this->setComponents([
                 'config' => [
                     'class' => 'craft\services\Config', 
-                    'defaultConfig' => include __DIR__ . '/config/gtm-consent.php'
+                    'defaultConfig' => include __DIR__ . '/config/cookie-consent.php'
                 ]
             ]);
             
+        });
+
+        Craft::$app->getView()->hook('cookie-consent', function(array &$context) {
+            return Craft::$app->getView()->renderTemplate(
+                'cookie-consent/popup', // Path to your template
+                $context // Pass context to the template
+            );
         });
         
     }

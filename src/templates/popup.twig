@@ -1,46 +1,46 @@
-{% if not craft.gtmConsent.hasSetPreferences() %}
+{% if not craft.cookieConsent.hasSetPreferences() %}
 
-    {% set config = craft.gtmConsent.getConfig() %}
+    {% set config = craft.cookieConsent.getConfig() %}
 
-    <div id="GTMConsent" class="fixed bottom-0 right-0 p-4 z-50 w-full md:w-[45ch] md:min-w-[45ch] md:max-w-[45ch]">
-        <div id="GTMConsent__Wrapper" class="bg-primary text-white p-4 w-full text-center md:text-left" x-data="{ detailOpen : false }">
+    <div id="CookieConsent" class="fixed bottom-0 right-0 p-4 z-50 w-full md:w-[45ch] md:min-w-[45ch] md:max-w-[45ch]">
+        <div id="CookieConsent__Wrapper" class="bg-primary text-white p-4 w-full text-center md:text-left" x-data="{ detailOpen : false }">
 
             <div x-show="!detailOpen">
-                <div id="GTMConsent__DefaultContent" class="flex flex-col gap-2">
+                <div id="CookieConsent__DefaultContent" class="flex flex-col gap-2">
 
                     {% if config['headline'] is defined and config['headline'] is not empty %}
-                        <h2 id="GTMConsent__Headline" class="font-semibold font-heading text-lg">
+                        <h2 id="CookieConsent__Headline" class="font-semibold font-heading text-lg">
                             {{ config['headline'] }}
                         </h2>
                     {% endif %}
 
                     {% if config['copy'] is defined and config['copy'] is not empty %}
-                        <div id="GTMConsent__Copy" class="body-sm md:max-w-[36ch]">
+                        <div id="CookieConsent__Copy" class="body-sm md:max-w-[36ch]">
                             {{ config['copy'] }}
                         </div>
                     {% endif %}
 
-                    <div id="GTMConsent__Buttons" class="flex flex-col md:flex-row items-center justify-between">
+                    <div id="CookieConsent__Buttons" class="flex flex-col md:flex-row items-center justify-between">
 
-                        <div id="GTMConsent__AcceptButtons" class="flex flex-col md:flex-row items-center space-x-4">
+                        <div id="CookieConsent__AcceptButtons" class="flex flex-col md:flex-row items-center space-x-4">
 
                             <form action="{{ url('actions/gtm-consent/consent/accept-all') }}" method="post">
                                 {{ csrfInput() }}
-                                <button id="GTMConsent__AcceptButton" class="hover:cursor-pointer">
+                                <button id="CookieConsent__AcceptButton" class="hover:cursor-pointer">
                                     Accept all
                                 </button>
                             </form>
 
                             <form action="{{ url('actions/gtm-consent/consent/index') }}" method="post">
                                 {{ csrfInput() }}
-                                <button id="GTMConsent__NecessaryOnlyButton" class="hover:cursor-pointer">
-                                    Necessary only
+                                <button id="CookieConsent__NecessaryOnlyButton" class="hover:cursor-pointer">
+                                    Reject all
                                 </button>
                             </form>
                         
                         </div>
 
-                        <button id="GTMConsent__Moreutton" class="hover:cursor-pointer" x-on:click="detailOpen=true">
+                        <button id="CookieConsent__Moreutton" class="hover:cursor-pointer" x-on:click="detailOpen=true">
                             More
                         </button>
                     
@@ -50,13 +50,13 @@
             </div>
 
             <div x-show="detailOpen" x-cloak>
-                <form method="post" action="{{ url('actions/gtm-consent/consent/index') }}" id="GTMConsent__DetailContent" class="flex flex-col gap-2">
+                <form method="post" action="{{ url('actions/gtm-consent/consent/index') }}" id="CookieConsent__DetailContent" class="flex flex-col gap-2">
 
                     {{ csrfInput() }}
 
-                    <div id="GTMConsent__Options" class="flex flex-col gap-y-4">
+                    <div id="CookieConsent__Options" class="flex flex-col gap-y-4">
 
-                        <div id="GTMConsent__Necessary" class="flex flex-col md:flex-row items-center md:items-start justify-between gap-4">
+                        <div id="CookieConsent__Necessary" class="flex flex-col md:flex-row items-center md:items-start justify-between gap-4">
 
                                 <div class="flex flex-col gap-y-1">
 
@@ -78,7 +78,7 @@
 
                         </div>
 
-                        <div id="GTMConsent__Analytics" class="flex flex-col md:flex-row items-center md:items-start justify-between gap-4">
+                        <div id="CookieConsent__Analytics" class="flex flex-col md:flex-row items-center md:items-start justify-between gap-4">
 
                                 <div class="flex flex-col gap-y-1">
 
@@ -100,7 +100,7 @@
 
                         </div>
 
-                        <div id="GTMConsent__Advertisement" class="flex flex-col md:flex-row items-center md:items-start justify-between gap-4">
+                        <div id="CookieConsent__Advertisement" class="flex flex-col md:flex-row items-center md:items-start justify-between gap-4">
 
                                 <div class="flex flex-col gap-y-1">
 
@@ -125,18 +125,18 @@
                     </div>
 
                     {% if config['policy_url'] is defined and config['policy_url'] is not empty %}
-                        <a href="{{ config['policy_url'] }}" id="GTMConsent__PolicyLink">
+                        <a href="{{ config['policy_url'] }}" id="CookieConsent__PolicyLink">
                             {{ config['policy_copy'] ?? "Learn more" }}
                         </a>
                     {% endif %}
                     
-                    <div id="GTMConsent__DetailButtons" class="flex flex-col md:flex-row items-center justify-between">
+                    <div id="CookieConsent__DetailButtons" class="flex flex-col md:flex-row items-center justify-between">
 
-                        <button id="GTMConsent__SubmitButton" type="submit">
+                        <button id="CookieConsent__SubmitButton" type="submit">
                             Save
                         </button>
 
-                        <button id="GTMConsent__LessButton" class="hover:cursor-pointer" type="button" x-on:click="detailOpen=false">
+                        <button id="CookieConsent__LessButton" class="hover:cursor-pointer" type="button" x-on:click="detailOpen=false">
                             Less
                         </button>
                     
@@ -167,7 +167,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#GTMConsent form').on('submit', function(e) {
+            $('#CookieConsent form').on('submit', function(e) {
                 e.preventDefault(); // Prevent the default form submission
 
                 $.ajax({
@@ -180,7 +180,7 @@
                             // Refresh the page
                             window.location.reload();
                         }else{
-                            $('#GTMConsent').hide();
+                            $('#CookieConsent').hide();
                         }
                     },
                     error: function(response) {

@@ -1,5 +1,5 @@
 {
-    "name": "jordanbeattie/craftcms-gtm-consent",
+    "name": "jordanbeattie/craftcms-cookie-consent",
     "description": "Consent manager for Google Tag Manager",
     "type": "craft-plugin",
     "keywords": [
@@ -21,17 +21,17 @@
     },
     "autoload": {
         "psr-4": {
-          "jordanbeattie\\gtmconsent\\": "src/"
+          "jordanbeattie\\cookieconsent\\": "src/"
         }
     },
     "extra": {
-        "name": "GTM Consent",
-        "handle": "gtm-consent",
+        "name": "Cookie Consent",
+        "handle": "cookie-consent",
         "hasCpSettings": true,
         "hasCpSection": false,
         "changelogUrl": "",
         "components": {},
-        "class": "jordanbeattie\\gtmconsent\\GtmConsent"
+        "class": "jordanbeattie\\cookieconsent\\CookieConsent"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
