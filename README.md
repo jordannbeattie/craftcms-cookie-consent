@@ -15,7 +15,7 @@ Add the following to your `tailwind.config.js`
 ```
 content: [
     ...
-    './vendor/jordanbeattie/craftcms-gtm-consent/**/*.twig'
+    './vendor/jordanbeattie/craftcms-cookie-consent/**/*.twig'
 ],
 ```
 
