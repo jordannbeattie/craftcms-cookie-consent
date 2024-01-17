@@ -9,22 +9,6 @@ class CookieConsentVariable
 {
 
     /*
-     * Render Form
-     */
-    public function render()
-    {
-
-        // Get the template content as a string
-        $content = Craft::$app->getView()->renderTemplate( 
-            'cookie-consent/popup', 
-            []
-        );
-
-        // Render the template content as raw string
-        return new Markup($content, Craft::$app->charset);
-    }
-
-    /*
      * Cookies have been set
      */
     public function hasSetPreferences()
@@ -38,24 +22,30 @@ class CookieConsentVariable
     public function getConsent()
     {
 
+        $properties = [];
+
         if( isset( $_COOKIE['cookieconsent'] ) )
         {
 
             $consentCookie = json_decode($_COOKIE['cookieconsent']);
             
-            return [
+            $properties = [
                 'set' => true,
                 'analytics' => $consentCookie->analytics,
                 'advertisement' => $consentCookie->advertisement,
             ];
 
         }
+        else 
+        {
+            $properties = [
+                'set' => false,
+                'analytics' => false,
+                'advertisement' => false,
+            ];
+        }
 
-        return [
-            'set' => false,
-            'analytics' => false,
-            'advertisement' => false,
-        ];
+        return $this->createObject( $properties );
 
     }
 
@@ -67,6 +57,19 @@ class CookieConsentVariable
         $projectConfig = Craft::$app->config->getConfigFromFile('cookie-consent') ?? [];
         $defaultConfig = include __DIR__ . "/../config/cookie-consent.php" ?? [];
         return array_unique( array_merge( $defaultConfig, $projectConfig ), SORT_REGULAR );
+    }
+
+    /*
+     * Create Object
+     */
+    private function createObject( $parameters = [] )
+    {
+        $obj = new \stdClass();
+        foreach( $parameters as $key => $val )
+        {
+            $obj->$key = $val;
+        }
+        return $obj;
     }
 
 }

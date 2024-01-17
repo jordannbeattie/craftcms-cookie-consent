@@ -20,18 +20,20 @@
                         </div>
                     {% endif %}
 
+                    <div id="CookieConsent__Error" class="text-red-700 body-sm hidden"></div>
+
                     <div id="CookieConsent__Buttons" class="flex flex-col md:flex-row items-center justify-between">
 
                         <div id="CookieConsent__AcceptButtons" class="flex flex-col md:flex-row items-center space-x-4">
 
-                            <form action="{{ url('actions/gtm-consent/consent/accept-all') }}" method="post">
+                            <form action="{{ url('actions/cookie-consent/consent/accept-all') }}" method="post">
                                 {{ csrfInput() }}
                                 <button id="CookieConsent__AcceptButton" class="hover:cursor-pointer">
                                     Accept all
                                 </button>
                             </form>
 
-                            <form action="{{ url('actions/gtm-consent/consent/index') }}" method="post">
+                            <form action="{{ url('actions/cookie-consent/consent/index') }}" method="post">
                                 {{ csrfInput() }}
                                 <button id="CookieConsent__NecessaryOnlyButton" class="hover:cursor-pointer">
                                     Reject all
@@ -50,7 +52,7 @@
             </div>
 
             <div x-show="detailOpen" x-cloak>
-                <form method="post" action="{{ url('actions/gtm-consent/consent/index') }}" id="CookieConsent__DetailContent" class="flex flex-col gap-2">
+                <form method="post" action="{{ url('actions/cookie-consent/consent/index') }}" id="CookieConsent__DetailContent" class="flex flex-col gap-2">
 
                     {{ csrfInput() }}
 
@@ -129,6 +131,8 @@
                             {{ config['policy_copy'] ?? "Learn more" }}
                         </a>
                     {% endif %}
+
+                    <div id="CookieConsent__DetailError" class="text-red-700 body-sm hidden"></div>
                     
                     <div id="CookieConsent__DetailButtons" class="flex flex-col md:flex-row items-center justify-between">
 
@@ -184,8 +188,11 @@
                         }
                     },
                     error: function(response) {
-                        // Handle error.
-                        alert('An error occurred');
+                        var error = "There was an error";
+                        $("#CookieConsent__Error").text( error );
+                        $("#CookieConsent__DetailError").text( error );
+                        $("#CookieConsent__Error").removeClass( 'hidden' );
+                        $("#CookieConsent__DetailError").removeClass( 'hidden' );
                     }
                 });
             });

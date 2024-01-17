@@ -4,7 +4,7 @@ namespace jordanbeattie\cookieconsent\controllers;
 use Craft;
 use craft\web\Controller;
 
-class CookieConsentController extends Controller
+class ConsentController extends Controller
 {
 
     protected array|bool|int $allowAnonymous = true;
