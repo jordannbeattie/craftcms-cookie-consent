@@ -2,7 +2,7 @@
 
     {% set config = craft.cookieConsent.getConfig() %}
 
-    <div id="CookieConsent" class="fixed bottom-0 right-0 p-4 z-50 w-full md:w-[420px] md:min-w-[420px] md:max-w-[420px]">
+    <div id="CookieConsent" class="fixed bottom-0 right-0 p-4 z-50 w-full md:w-[420px] md:min-w-[420px] md:max-w-[420px] max-h-screen overflow-scroll">
         <div id="CookieConsent__Wrapper" class="bg-gray-50 text-gray-600 border-gray-100 border p-4 w-full text-center md:text-left" x-data="{ detailOpen : false }">
 
             <div x-show="!detailOpen">
